@@ -14,42 +14,58 @@ class Jasa extends CI_Controller {
 
   public function index() {
     $this->load->view('cart');
+    $this->load->model('all_model');
+  }
+  
+  public function add_to_cart() {
+      $data = array(
+          'id' => $this->input->post('id'),
+          'name' => $this->input->post('name'),
+          'qty' => $this->input->post('qty'),
+          'price' => $this->input->post('price'),
+          'options' => array(
+              'dari' => $this->input->post('dari'),
+              'sampai' => $this->input->post('sampai'),
+              'gambar' => $this->input->post('gambar')
+          )
+      );
+
+      $this->cart->insert($data);
+      redirect('cartcontroller');
   }
 
-  public function simpan() {
-    $jenis_latihan  = $this->input->post('jenis_latihan');
-    $tanggal_mulai  = $this->input->post('tanggal_mulai');
-    $keterangan     = $this->input->post('keterangan');
+  public function remove_from_cart($rowid) {
+      $data = array(
+          'rowid' => $rowid,
+          'qty' => 0
+      );
 
-    $data = array(
-      'user_id'       => $this->session->userdata('user_id'),
-      'keterangan'    => $keterangan,
-      'jenis_jasa_id' => $jenis_latihan,
-      'tanggal_mulai' => $tanggal_mulai,
-    );
-    $harga = $this->all_model->get_where(array('jenis_jasa_id'=>$jenis_latihan), 'jenis_jasa');
-    $this->session->set_userdata('jenis_latihan', $harga[0]->nama_jasa);
-    $this->session->set_userdata('tanggal_mulai_jasa', $tanggal_mulai);
-    $this->session->set_userdata('keterangan_jasa', $keterangan);
-    $this->session->set_userdata('total_bayar_jasa', $harga[0]->harga_jasa);
-    $a = $this->all_model->insert($data, 'transaksi_jasa');
-    if ($a) {
-      redirect('jasa/selesai');
-    }
+      $this->cart->update($data);
+      redirect('cartcontroller');
   }
 
-  public function selesai() {
-    $this->load->view('selesai_cart');
-  }
+  public function save_cart() {
+      // Implement your saving logic here
+      // Example: Save the cart data to the database
+      $cart_data = $this->cart->contents();
+      
+      foreach ($cart_data as $item) {
+          $data = array(
+              'product_id' => $item['id'],
+              'product_name' => $item['name'],
+              'quantity' => $item['qty'],
+              'price' => $item['price'],
+              'subtotal' => $item['subtotal'],
+              'dari' => isset($item['options']['dari']) ? $item['options']['dari'] : NULL,
+              'sampai' => isset($item['options']['sampai']) ? $item['options']['sampai'] : NULL,
+              'user_id' => $this->session->userdata('user_id') // Assuming you have user login session
+          );
 
-  public function tutup() {
-    $this->session->unset_userdata('jenis_latihan');
-    $this->session->unset_userdata('tanggal_mulai_jasa');
-    $this->session->unset_userdata('keterangan_jasa');
-    $this->session->unset_userdata('total_bayar_jasa');
-     redirect('home');
-  }
+          $this->all_model->save_order($data); // Assuming save_order is a method in your model
+      }
 
+      $this->cart->destroy(); // Clear the cart after saving
+      redirect('cartcontroller');
+  }
 }
-
  ?>

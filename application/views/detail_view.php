@@ -43,7 +43,7 @@ $(window).load(function() {
               <div class="flexslider">
                     <ul class="slides">
                       <li data-thumb="<?php echo base_url('upload/'.$detail[0]->gambar);?>">
-                          <div class="thumb-image"> <img src="<?php echo base_url('upload/'.$detail[0]->gambar);?>" class="img-responsive"> </div>
+                          <div class="thumb-image"> <img src="<?php echo base_url('upload/'.$detail[0]->gambar);?>" data-imagezoom="true" class="img-responsive"> </div>
                       </li>
                     </ul>
                   <div class="clearfix"></div>
@@ -86,7 +86,7 @@ $(window).load(function() {
                     </div>
                     <ul>
                         <li class="ad-2-crt simpleCart_shelfItem">
-                            <button type="submit" role="button" class="btn" >Cart</button>
+                            <button type="submit" role="button" class="btn" >Sewa</button>
                         </li>
                     </ul>
                   </form>

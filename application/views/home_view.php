@@ -1,17 +1,15 @@
 <?php $this->load->view('header'); ?>
 <style>
-    /* Menambahkan latar belakang merah marun */
     .add-button {
         background-color: maroon;
         color: white;
         padding: 5px 50px; /* Sesuaikan dengan ukuran yang diinginkan */
         border-radius: 20px; /* Ubah hanya satu properti border-radius */
         display: inline-block;
-        text-decoration: none; /* Menghilangkan garis bawah tautan */
-        position: relative; /* Memungkinkan overlay pseudo-element */
+        text-decoration: none; 
+        position: relative; 
     }
 
-    /* Mengatur konten di tengah secara horizontal dan vertikal */
     .product-details {
         display: flex;
         flex-direction: column;
@@ -22,7 +20,7 @@
 
     .products-gallery {
         background: linear-gradient(to bottom, #1D3A5D, #8594AB);
-        padding: 20px 0; /* Tambahkan padding atas dan bawah */
+        padding: 20px 0;
         color: white;
     }
     
